@@ -11,7 +11,7 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "quotations",
+        name: "quotes",
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
       },
