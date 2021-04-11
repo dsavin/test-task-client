@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { API } from "aws-amplify";
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -13,10 +13,30 @@ export default function SearchForm() {
   const [excess, setExcess] = useState(true);
   const [breeds, setBreeds] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [policies, setPolicies] = useState([])
 
   /*function validateForm() {
     return email.length > 0 && password.length > 0;
   }*/
+  useEffect(() => {
+    async function onLoad() {
+      try {
+        const policies = await loadPolicies();
+        setPolicies(policies);
+      } catch (e) {
+        onError(e);
+      }
+  
+      setIsLoading(false);
+    
+    }
+    
+    onLoad();
+  }, []);
+
+  async function loadPolicies() {
+    return API.get("quotes", "/policies", {});
+  }
 
   async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

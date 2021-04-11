@@ -24,7 +24,7 @@ export default function Home() {
   useEffect(() => {
     async function onLoad() {
       try {
-        const quotes = await loadNotes();
+        const quotes = await loadQuotes();
         setQuotes(quotes);
       } catch (e) {
         onError(e);
@@ -37,7 +37,7 @@ export default function Home() {
     onLoad();
   }, []);
   
-  function loadNotes() {
+  async function loadQuotes() {
     return API.get("quotes", "/", {});
   }
 
