@@ -11,7 +11,7 @@ import { Row } from "react-bootstrap";
 import Breed from "../types/breeds";
 
 export default function SearchForm() {
-  const [policyId, setPolicyId] = useState(0);
+  const [policyId, setPolicyId] = useState(1);
   const [breedId, setBreedId] = useState(0);
   const [pet, setPet] = useState("");
   const [age, setAge] = useState(0);
@@ -124,14 +124,17 @@ export default function SearchForm() {
             <Form.Group controlId="formBasicRange">
               <Form.Label>Pet Age(months)</Form.Label>
               <Form.Control
-                onChange={(e) => setAge(parseInt(e.target.value))}
+                onChange={(e) => setAge(parseInt(e.currentTarget.value))}
               />
               
             </Form.Group>
           </Col>
           <Col>
             <Form.Group controlId="formBasicCheckbox">
-              <Form.Check type="checkbox" label="Excess" />
+              <Form.Check
+                type="checkbox"
+                onChange={(e) => setExcess(!!e.currentTarget.value)}
+                label="Excess" />
             </Form.Group>
           </Col>
         </Form.Row>
