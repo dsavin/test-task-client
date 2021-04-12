@@ -19,6 +19,7 @@ export default function SearchForm() {
   const [breeds, setBreeds] = useState<Breed[] | undefined> (undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [policies, setPolicies] = useState<Policy[] | undefined> (undefined)
+  const [quotes, setQuotes] = useState([]);
 
   /*function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -58,7 +59,8 @@ export default function SearchForm() {
     setIsLoading(true);
 
     try {
-      await searchQuotes();
+      const quotes = await searchQuotes();
+      setQuotes(quotes.Items)
     } catch (e) {
       onError(e);
       setIsLoading(false);
