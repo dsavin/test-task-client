@@ -22,7 +22,7 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    async function onLoad() {
+    /*async function onLoad() {
       try {
         const quotes = await loadQuotes();
         setQuotes(quotes);
@@ -34,11 +34,11 @@ export default function Home() {
     
     }
     
-    onLoad();
+    onLoad();*/
   }, []);
   
   async function loadQuotes() {
-    return API.get("quotes", "/", {});
+    return API.post("quotes", "/", {});
   }
 
   function renderQuotesList(quotes: Array<Quote>) {
