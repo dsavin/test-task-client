@@ -7,19 +7,20 @@ import { onError } from "../libs/errorLib";
 import config from "../config";
 import Policy from "../types/policies";
 import Col from "react-bootstrap/esm/Col";
-import { Row } from "react-bootstrap";
+import { ListGroup, Row } from "react-bootstrap";
 import Breed from "../types/breeds";
+import Quote from "../types/quote";
 
 export default function SearchForm() {
   const [policyId, setPolicyId] = useState(1);
   const [breedId, setBreedId] = useState(0);
-  const [pet, setPet] = useState("");
   const [age, setAge] = useState(0);
   const [excess, setExcess] = useState(true);
   const [breeds, setBreeds] = useState<Breed[] | undefined> (undefined);
   const [isLoading, setIsLoading] = useState(false);
   const [policies, setPolicies] = useState<Policy[] | undefined> (undefined)
   const [quotes, setQuotes] = useState([]);
+
 
   /*function validateForm() {
     return email.length > 0 && password.length > 0;
@@ -60,7 +61,8 @@ export default function SearchForm() {
 
     try {
       const quotes = await searchQuotes();
-      setQuotes(quotes.Items)
+      console.log('quotes', quotes)
+      setQuotes(quotes)
     } catch (e) {
       onError(e);
       setIsLoading(false);
@@ -76,6 +78,56 @@ export default function SearchForm() {
         breedId
       }
     });
+  }
+
+  function renderQuotesList(quotes: Array<Quote>) {
+    return (
+        <>
+          {quotes.map(({ policyName, breed, basePrice, finalPrice, breedModifier, excessCorrection, petModifier, ageCorrection  }) => (
+            <ListGroup.Item action>
+              <span className="font-weight-bold">
+                {policyName} insuranfe for {breed}, {age} months old
+              </span>
+              <br />
+              <span className="text-muted">
+                  Base Price: {basePrice}
+              </span>
+              <br />
+              <br />
+              <span className="text-muted">
+                  Pet Modifier: {petModifier}
+              </span>
+              <br />
+              <span className="text-muted">
+                  Breed Modifier: {breedModifier}
+              </span>
+              <br />
+              <span className="text-muted">
+                  Age Correction: {ageCorrection}
+              </span>
+              <br />
+              <span className="text-muted">
+                Excess Correction: {excessCorrection}
+              </span>
+              <br />
+              <br />
+              <span className="font-weight-bold">
+                  Final Price: {finalPrice}
+              </span>
+            </ListGroup.Item>
+
+          ))}
+        </>
+      );
+  }
+
+  function renderQuotes() {
+    return (
+      <div className="quotes">
+        <h2 className="pb-3 mt-4 mb-3 border-bottom">Quotes</h2>
+        <ListGroup>{renderQuotesList(quotes)}</ListGroup>
+      </div>
+    );
   }
 
 
@@ -135,7 +187,7 @@ export default function SearchForm() {
             <Form.Group controlId="formBasicCheckbox">
               <Form.Check
                 type="checkbox"
-                onChange={(e) => setExcess(!!e.currentTarget.value)}
+                onChange={(e) => setExcess(e.currentTarget.checked)}
                 label="Excess" />
             </Form.Group>
           </Col>
@@ -162,6 +214,9 @@ export default function SearchForm() {
           </Col>
         </Form.Group>
       </Form>
+      {renderQuotes()}
     </div>
+
+    
   );
 }
